@@ -1,0 +1,75 @@
+.join-gotoheading-headingmodal-suggestion {
+	display: flex;
+	align-items: baseline;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.join-gotoheading-headingmodal-suggestion > svg {
+	flex-shrink: 0;
+	margin-right: 0.5rem;
+	align-self: flex-start;
+	opacity: 0.5;
+}
+
+.join-gotoheading-headingmodal-suggestion > .title {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex-shrink: 0;
+}
+
+.join-gotoheading-headingmodal-suggestion > .path {
+	margin-left: auto;
+	flex-shrink: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding-left: 1em;
+}
+
+.join-gotoheading-headingmodal-suggestion> .icon {
+	margin-left: auto;
+	align-self: center;
+	flex-shrink: 1;
+	height: 1rem;
+}
+
+.join-gotoheading-headingmodal-suggestion > .icon svg {
+	height: 100%;
+	object-fit: contain;
+	object-position: right;
+}
+
+.join-gotoheading-headingmodal-suggestion small {
+	color: var(--text-faint);
+}
+
+.join-gotoheading-headingmodal-suggestion-default {
+	background-color: var(--background-modifier-active-hover);
+}
+
+.join-gotoheading-headingmodal-suggestion-default small {
+	color: var(--text-accent);
+}
+
+.join-gotoheading-headingmodal-suggestion-default.is-selected small {
+	color: var(--text-faint);
+	opacity: 1;
+}
+
+.join-gotoheading-headingmodal-suggestion-spacer {
+	color: var(--text-faint);
+	opacity: 0.5;
+	margin-right: 0.25rem;
+}
+
+.join-gotoheading-headingmodal-suggestion-default .join-gotoheading-headingmodal-suggestion-spacer {
+	color: var(--text-accent);
+	opacity: 0.25;
+}
+
+.join-gotoheading-headingmodal-suggestion-default.is-selected .join-gotoheading-headingmodal-suggestion-spacer {
+	color: var(--text-faint);
+	opacity: 0.5;
+}

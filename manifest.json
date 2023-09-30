@@ -1,0 +1,9 @@
+{
+	"id": "obsidian-gotoheading",
+	"name": "Go To Heading",
+	"version": "0.1.0",
+	"minAppVersion": "1.4.11",
+	"description": "Quickly navigate between headings",
+	"author": "join",
+	"isDesktopOnly": false
+}

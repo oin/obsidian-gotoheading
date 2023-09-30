@@ -1,0 +1,7 @@
+build
+.vscode
+node_modules
+*.map
+data.json
+package-lock.json
+.DS_Store

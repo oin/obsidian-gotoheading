@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ES6",
+		"baseUrl": ".",
+		"noImplicitAny": true,
+		"inlineSourceMap": true,
+		"inlineSources": true,
+		"moduleResolution": "node",
+		"allowJs": true,
+		"isolatedModules": true,
+		"strictNullChecks": true,
+		"outDir": "build",
+		"lib": [ "dom", "es5", "es6", "es7" ]
+	},
+	"include": ["src/**/*.ts"]
+}
