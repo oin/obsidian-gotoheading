@@ -1,4 +1,4 @@
-name: Release Obsidian theme
+name: Release Obsidian plugin
 
 on:
   push:
