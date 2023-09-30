@@ -5,5 +5,5 @@
 	"minAppVersion": "1.4.11",
 	"description": "Quickly navigate between headings",
 	"author": "join",
-	"isDesktopOnly": false
+	"isDesktopOnly": true
 }
