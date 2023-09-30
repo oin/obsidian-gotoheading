@@ -14,21 +14,21 @@ export default class GotoHeadingPlugin extends Plugin {
 
 		this.addCommand({
 			id: "join-gotoheading-previous",
-			name: "Go To Heading: Previous Heading",
+			name: "Go To Heading: Previous heading",
 			editorCallback: (editor: Editor, view: MarkdownView) => {
 				this.goToRelativeHeading(editor, view, -1);
 			}
 		});
 		this.addCommand({
 			id: "join-gotoheading-next",
-			name: "Go To Heading: Next Heading",
+			name: "Go To Heading: Next heading",
 			editorCallback: (editor: Editor, view: MarkdownView) => {
 				this.goToRelativeHeading(editor, view, 1);
 			}
 		});
 		this.addCommand({
 			id: "join-gotoheading-switcher",
-			name: "Go To Heading: Open Switcher",
+			name: "Go To Heading: Open switcher",
 			editorCallback: (editor: Editor, view: MarkdownView) => {
 				this.openHeadingSwitcher(editor, view);
 			},
