@@ -13,22 +13,22 @@ export default class GotoHeadingPlugin extends Plugin {
 		this.addSettingTab(new GotoHeadingSettingTab(this.app, this));
 
 		this.addCommand({
-			id: "join-gotoheading-previous",
-			name: "Go To Heading: Previous heading",
+			id: "gotoheading-previous",
+			name: "Previous heading",
 			editorCallback: (editor: Editor, view: MarkdownView) => {
 				this.goToRelativeHeading(editor, view, -1);
 			}
 		});
 		this.addCommand({
-			id: "join-gotoheading-next",
-			name: "Go To Heading: Next heading",
+			id: "gotoheading-next",
+			name: "Next heading",
 			editorCallback: (editor: Editor, view: MarkdownView) => {
 				this.goToRelativeHeading(editor, view, 1);
 			}
 		});
 		this.addCommand({
-			id: "join-gotoheading-switcher",
-			name: "Go To Heading: Open switcher",
+			id: "gotoheading-switcher",
+			name: "Open switcher",
 			editorCallback: (editor: Editor, view: MarkdownView) => {
 				this.openHeadingSwitcher(editor, view);
 			},

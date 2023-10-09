@@ -1,6 +1,6 @@
 {
-	"name": "obsidian-gotoheading",
-	"version": "0.1.0",
+	"name": "oin-gotoheading",
+	"version": "0.1.1",
 	"description": "Quickly navigate between headings in Obisidian",
 	"main": "main.js",
 	"scripts": {
