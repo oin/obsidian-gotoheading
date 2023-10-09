@@ -7,7 +7,4 @@ This Obsidian plugin provides commands that improve navigation between the headi
 
 ## How to install
 
-Either:
-
- - unzip the released zip file into `<your vault>/.obsidian/plugins/`,
- - or manually copy the released `main.js`, and `manifest.json` to `<your vault>/.obsidian/plugins/obsidian-gotoheading`.
+Manually copy the released `main.js`, and `manifest.json` to `<your vault>/.obsidian/plugins/obsidian-gotoheading`.
