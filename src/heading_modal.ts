@@ -27,11 +27,18 @@ export type Suggestion = HeadingSuggestion | FileSuggestion;
 
 type HeadingModalCallback = (item: Suggestion) => void;
 
+const HeadingModalLimit = 50000;
+
 export class HeadingModal extends FuzzySuggestModal<Suggestion> {
 	public items: Suggestion[] = [];
 	public defaultItemIndex: number = -1;
 	public onChoose: HeadingModalCallback;
 	public settings: GotoHeadingSettings;
+
+	constructor(app: App) {
+		super(app);
+		this.limit = HeadingModalLimit;
+	}
 
 	onOpen() {
 		super.onOpen();
