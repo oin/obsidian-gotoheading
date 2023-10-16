@@ -1,16 +1,34 @@
 import { App, Editor, FuzzyMatch, FuzzySuggestModal, Notice, setIcon } from "obsidian";
 import { GotoHeadingSettings } from "./settings";
 
-interface HeadingSuggestion {
+export enum SuggestionType {
+	File,
+	Heading,
+};
+
+export interface FileSuggestion {
+	type: SuggestionType;
+	text: string;
+
+	path: string;
+}
+
+export interface HeadingSuggestion {
+	type: SuggestionType;
+	text: string;
+	
 	heading: string;
 	level: number;
 	line: number;
+	file?: FileSuggestion;
 }
 
-type HeadingModalCallback = (item: HeadingSuggestion) => void;
+export type Suggestion = HeadingSuggestion | FileSuggestion;
 
-export class HeadingModal extends FuzzySuggestModal<HeadingSuggestion> {
-	public items: HeadingSuggestion[] = [];
+type HeadingModalCallback = (item: Suggestion) => void;
+
+export class HeadingModal extends FuzzySuggestModal<Suggestion> {
+	public items: Suggestion[] = [];
 	public defaultItemIndex: number = -1;
 	public onChoose: HeadingModalCallback;
 	public settings: GotoHeadingSettings;
@@ -33,28 +51,59 @@ export class HeadingModal extends FuzzySuggestModal<HeadingSuggestion> {
 		}
 	}
 
-	getItems(): HeadingSuggestion[] {
+	getItems(): Suggestion[] {
 		return this.items;
 	}
 
-	getItemText(item: HeadingSuggestion): string {
-		return item.heading;
+	getItemText(item: Suggestion): string {
+		return item.text;
 	}
 
-	onChooseItem(item: HeadingSuggestion, evt: MouseEvent | KeyboardEvent): void {
+	onChooseItem(item: Suggestion, evt: MouseEvent | KeyboardEvent): void {
 		this.onChoose?.(item);
 	}
 
-	renderSuggestion(item: FuzzyMatch<HeadingSuggestion>, el: HTMLElement): void {
-		const isSearching = this.inputEl.value.length > 0;
-		const level = item.item.level;
-		const iconName = level >= 1 && level <= 6 ? `heading-${level}` : "heading";
-		
+	renderSuggestion(item: FuzzyMatch<Suggestion>, el: HTMLElement): void {
 		el.classList.add("join-gotoheading-headingmodal-suggestion");
 
 		if(this.settings.highlightCurrentHeading && this.defaultItemIndex >= 0 && this.items.indexOf(item.item) == this.defaultItemIndex) {
 			el.classList.add("join-gotoheading-headingmodal-suggestion-default");
 		}
+		
+		switch(item.item.type) {
+			case SuggestionType.File:
+				return this.renderFileSuggestion(item, el);
+			case SuggestionType.Heading:
+				return this.renderHeadingSuggestion(item, el);
+		}
+	}
+
+	protected renderFileSuggestion(item: FuzzyMatch<Suggestion>, el: HTMLElement) {
+		const s = item.item as FileSuggestion;
+
+		const isSearching = this.inputEl.value.length > 0;
+		
+		el.classList.add("join-gotoheading-headingmodal-suggestion");
+		el.classList.add("join-gotoheading-headingmodal-suggestion-file");
+		if(isSearching) {
+			el.classList.add("join-gotoheading-headingmodal-suggestion-searching");
+		}
+
+		// setIcon(el, "file-text");
+
+		const titleEl = el.createSpan({ cls: "title"});
+		super.renderSuggestion(item, titleEl);
+
+		let smallEl = el.createEl("small", { cls: "icon" });
+		setIcon(smallEl, "file-text");
+	}
+
+	protected renderHeadingSuggestion(item: FuzzyMatch<Suggestion>, el: HTMLElement) {
+		const s = item.item as HeadingSuggestion;
+		
+		const isSearching = this.inputEl.value.length > 0;
+		const level = s.level;
+		const iconName = level >= 1 && level <= 6 ? `heading-${level}` : "heading";
 
 		if(isSearching) {
 			// Set a heading icon
@@ -73,7 +122,7 @@ export class HeadingModal extends FuzzySuggestModal<HeadingSuggestion> {
 
 		// If a search is ongoing, display parent heading information
 		if(isSearching) {
-			let smallEl = el.createEl("small", { text: this.parentHeadingString(item.item), cls: "path" });
+			el.createEl("small", { text: this.parentHeadingString(s), cls: "path" });
 		} else {
 			let smallEl = el.createEl("small", { cls: "icon" });
 			setIcon(smallEl, iconName);
@@ -83,20 +132,27 @@ export class HeadingModal extends FuzzySuggestModal<HeadingSuggestion> {
 	protected parentHeadingString(item: HeadingSuggestion): string {
 		let string = "";
 
+		if(item.file) {
+			string = item.file.text;
+		}
+
 		while(item) {
 			const parentIndex = this.items.findLastIndex(
-				heading => heading.line < item.line
-				&& heading.level < item.level
+				heading =>
+					heading.type == SuggestionType.Heading
+					&& (heading as HeadingSuggestion).line < item.line
+					&& (heading as HeadingSuggestion).level < item.level
 				);
 			if(parentIndex < 0) break;
 			const parent = this.items[parentIndex];
+			if(parent.type != SuggestionType.Heading) break;
 
 			if(string.length > 0) {
-				string = `${parent.heading} > ${string}`;
+				string = `${(parent as HeadingSuggestion).heading} > ${string}`;
 			} else {
-				string = parent.heading;
+				string = (parent as HeadingSuggestion).heading;
 			}
-			item = parent;
+			item = parent as HeadingSuggestion;
 		}
 
 		return string;

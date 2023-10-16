@@ -6,6 +6,15 @@
 	text-overflow: ellipsis;
 }
 
+.join-gotoheading-headingmodal-suggestion-file {
+	color: var(--text-muted);
+	font-weight: bold;
+}
+
+.join-gotoheading-headingmodal-suggestion-file.join-gotoheading-headingmodal-suggestion-searching {
+	font-weight: normal;
+}
+
 .join-gotoheading-headingmodal-suggestion > svg {
 	flex-shrink: 0;
 	margin-right: 0.5rem;

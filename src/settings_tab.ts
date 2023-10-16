@@ -1,5 +1,15 @@
-import { App, PluginSettingTab, Setting } from "obsidian";
+import { App, PluginSettingTab, Setting, Notice } from "obsidian";
 import GotoHeadingPlugin from "./main";
+import { FolderSortMethod, FolderSortMethodId, FolderSortMethodIdentifiers } from "./settings";
+
+const FolderSortMethodName: {[method in FolderSortMethod]: string} = {
+	[FolderSortMethod.ByNameAscending]: "File name (A to Z)",
+	[FolderSortMethod.ByNameDescending]: "File name (Z to A)",
+	[FolderSortMethod.ByModificationDateDescending]: "Modified time (new to old)",
+	[FolderSortMethod.ByModificationDateAscending]: "Modified time (old to new)",
+	[FolderSortMethod.ByCreationDateDescending]: "Creation date (new to old)",
+	[FolderSortMethod.ByCreationDateAscending]: "Creation date (old to new)",
+};
 
 export class GotoHeadingSettingTab extends PluginSettingTab {
 	plugin: GotoHeadingPlugin;
@@ -22,6 +32,23 @@ export class GotoHeadingSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.highlightCurrentHeading)
 					.onChange(async (value) => {
 						this.plugin.settings.highlightCurrentHeading = toggle.getValue();
+						await this.plugin.saveSettings();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName("File sort order")
+			.setDesc("How to sort files in the 'In folder' switcher")
+			.addDropdown((dropdown) => {
+				const ids = Object.keys(FolderSortMethodName).forEach((key, index) => {
+					dropdown.addOption(FolderSortMethod[index], FolderSortMethodName[index as FolderSortMethod]);
+				});
+				dropdown
+					.setValue(this.plugin.settings.fileSortOrder)
+					.onChange(async (value) => {
+						if(!FolderSortMethodIdentifiers.contains(value)) return;
+						
+						this.plugin.settings.fileSortOrder = value as FolderSortMethodId;
 						await this.plugin.saveSettings();
 					});
 			});
