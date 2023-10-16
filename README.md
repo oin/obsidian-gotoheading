@@ -16,10 +16,10 @@ Use one of the following methods:
 
 ## What's new?
 
-### Version 0.2.0
+### Version 0.2.x
 
  - Add the _In folder_ variant of the _Open switcher_ command.
 
-### Version 0.1.1
+### Version 0.1.x
 
  - Initial release
