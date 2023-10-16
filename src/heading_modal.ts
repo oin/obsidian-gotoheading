@@ -21,13 +21,15 @@ export class HeadingModal extends FuzzySuggestModal<HeadingSuggestion> {
 		if(this.defaultItemIndex >= 0 && this.defaultItemIndex < this.items.length) {
 			//FIXME: This is a hack to select the default item, while we wait for a proper API
 			let chooser = (this as any)['chooser'];
-			for(let i = 0; i < this.defaultItemIndex; i++) {
-				chooser['moveDown'](new KeyboardEvent("keydown", { key: "ArrowDown" }));
+			if(this.defaultItemIndex <= this.items.length / 2) {
+				for(let i = 0; i < this.defaultItemIndex; i++) {
+					chooser['moveDown'](new KeyboardEvent("keydown", { key: "ArrowDown" }));
+				}
+			} else {
+				for(let i = this.items.length - 1; i >= this.defaultItemIndex; --i) {
+					chooser['moveUp'](new KeyboardEvent("keydown", { key: "ArrowUp" }));
+				}
 			}
-
-			//FIXME: Add a class to style the default item
-			// const el = chooser['suggestions'][this.defaultItemIndex];
-			// el.classList.add("join-gotoheading-headingmodal-suggestion-default");
 		}
 	}
 
