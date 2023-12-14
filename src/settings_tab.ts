@@ -23,6 +23,22 @@ export class GotoHeadingSettingTab extends PluginSettingTab {
 		let { containerEl } = this;
 
 		containerEl.empty();
+
+		containerEl.createEl("h2", { text: "Previous/Next Settings" });
+
+		new Setting(containerEl)
+			.setName("Include first/last line")
+			.setDesc("Go to the last line after the last heading, and the first line before the first heading")
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.includeDocumentBoundaries)
+					.onChange(async (value) => {
+						this.plugin.settings.includeDocumentBoundaries = toggle.getValue();
+						await this.plugin.saveSettings();
+					});
+			});
+
+		containerEl.createEl("h2", { text: "Switcher Settings" });
 		
 		new Setting(containerEl)
 			.setName("Highlight current heading")

@@ -61,24 +61,45 @@ export default class GotoHeadingPlugin extends Plugin {
 	}
 
 	protected goToRelativeHeading(editor: Editor, view: MarkdownView, offset: number) {
-		if (offset == 0) return;
+		if(offset == 0) return;
 
 		const headings = headingsForActiveFile(this.app);
-		if(!headings?.length) return;
+		if(!headings?.length) {
+			if(this.settings.includeDocumentBoundaries) {
+				if(offset < 0) {
+					goAndScrollToLine(editor, 0);
+				} else if(offset > 0) {
+					goAndScrollToLine(editor, editor.lastLine());
+				}
+			}
+			return;
+		}
 		
 		// Get the index of the nearest heading to the cursor
 		const line = editor.getCursor().line;
-		const nearestHeadingIndex = headings.findLastIndex(heading => heading.position.start.line <= line);
-		if (nearestHeadingIndex < 0) return;
+		var nearestHeadingIndex = headings.findLastIndex(heading => heading.position.start.line <= line);
 
-		const nearestHeading = headings[nearestHeadingIndex];
-		if(offset == -1 && line > nearestHeading.position.end.line) {
-			offset = 0;
+		if(nearestHeadingIndex >= 0) {
+			const nearestHeading = headings[nearestHeadingIndex];
+			if(offset == -1 && line > nearestHeading.position.end.line) {
+				offset = 0;
+			}
 		}
 
 		// Compute the new heading index
 		let idx = nearestHeadingIndex + offset;
-		if(idx < 0 || idx >= headings.length) return;
+		if(idx >= headings.length) {
+			if(this.settings.includeDocumentBoundaries) {
+				goAndScrollToLine(editor, editor.lastLine());
+			}
+			return;
+		}
+		if(idx < 0) {
+			if(this.settings.includeDocumentBoundaries) {
+				goAndScrollToLine(editor, 0);
+			}
+			return;
+		}
 
 		// Move the cursor to the new heading
 		const heading = headings[idx];

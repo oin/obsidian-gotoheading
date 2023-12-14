@@ -49,6 +49,6 @@ export function goAndScrollToLine(editor: Editor, line: number) {
 	// Also scroll to the heading to ensure its contents are visible
 	const position = editor.getCursor();
 	const range = editor.wordAt(position);
-	if (!range) return;
+	if(!range) return;
 	editor.scrollIntoView(range, true);
 }

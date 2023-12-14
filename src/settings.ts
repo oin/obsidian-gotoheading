@@ -12,9 +12,11 @@ export const FolderSortMethodIdentifiers = Object.keys(FolderSortMethod).filter(
 export interface GotoHeadingSettings {
 	highlightCurrentHeading: boolean;
 	fileSortOrder: FolderSortMethodId;
+	includeDocumentBoundaries: boolean;
 }
 
 export const DEFAULT_SETTINGS: GotoHeadingSettings = {
 	highlightCurrentHeading: true,
 	fileSortOrder: FolderSortMethod[FolderSortMethod.ByNameAscending] as FolderSortMethodId,
+	includeDocumentBoundaries: false,
 };
